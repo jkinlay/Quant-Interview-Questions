@@ -1,0 +1,216 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Advanced Quant Python Exercises</title><style>
+:root{color-scheme:light;--ink:#182332;--muted:#526171;--line:#ccd5df;}
+*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#f3f5f7;margin:0;line-height:1.6}
+main{max-width:1000px;margin:32px auto;padding:52px 64px;background:white;border:1px solid #e0e5eb}
+h1,h2,h3,h4{color:#000;line-height:1.2;break-after:avoid}h1{font-size:34px;margin:0 0 18px}h2{font-size:25px;margin:46px 0 17px}h3{font-size:19px;margin:26px 0 12px}h4{font-size:15px;margin:20px 0 8px}
+p{margin:10px 0 15px}li{margin:6px 0}ul,ol{padding-left:24px}a{color:#24548c;text-underline-offset:3px}nav{margin:24px 0 32px}nav a{display:inline-block;margin:3px 16px 3px 0}
+.meta{color:var(--muted);font-size:14px}.label{font-weight:700;margin-bottom:6px}
+pre{font-family:Consolas,"Courier New",monospace;font-size:13px;line-height:1.48;white-space:pre-wrap;overflow-wrap:anywhere;background:#f5f7f9;border:1px solid #dce2e9;padding:16px;margin:10px 0 18px;tab-size:4}
+code{font-family:inherit}table{width:100%;border-collapse:collapse;margin:18px 0 26px;font-size:14px;break-inside:auto}
+th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:middle;text-align:left}th{background:#223951;color:#fff;font-weight:600}tbody tr:nth-child(even){background:#f5f8fb}tr{break-inside:avoid}thead{display:table-header-group}
+.question{margin-top:48px;padding-top:1px}.answer{margin-top:25px}.small{font-size:13px}.rule{margin-top:22px;font-weight:700}
+footer{margin-top:44px;color:var(--muted);font-size:12px}.toolbar{max-width:1000px;margin:20px auto 0;font-size:14px}
+@media(max-width:720px){main{margin:0;padding:24px 20px;border:0}h1{font-size:29px}pre{font-size:12px;padding:12px}table{font-size:12px}th,td{padding:7px}.toolbar{padding:0 20px}}
+@media print{@page{size:A4;margin:17mm}body{background:white;font-size:10.5pt;line-height:1.4}main{max-width:none;margin:0;padding:0;border:0}h1{font-size:25pt}h2{font-size:18pt;margin-top:24pt}h3{font-size:14pt}h4{font-size:11pt}pre{font-size:9pt;line-height:1.3;padding:9pt;break-inside:avoid}table{font-size:9pt}th,td{padding:6pt}a{color:inherit;text-decoration:none}.toolbar,nav{display:none}.question,.case{break-before:page}.meta{font-size:9pt}footer{font-size:8pt}.notes{height:32mm;border-bottom:1px solid #ccc}.print-break{break-before:page}}
+</style></head><body><div class="toolbar">Advanced revision 2 | 26 October 2026 | Candidate copy without answers</div><main><h1>Advanced Quant Python Exercises</h1><p>This interview is intended for an experienced quantitative Python practitioner. You will receive selected questions, not the full bank as a timed examination. Each includes a contract, code and its actual output.</p><p>Explain the mechanisms that violate the contract, implement a repair, and establish why it is correct. Discuss numerical stability, memory and time costs where relevant. You may use the reference material supplied by the interviewer; equivalent correct implementations are welcome.</p><p>The code was run with Python 3.12, pandas 3.0 and NumPy 2.3. Assume the stated input contract. Request clarification if a production guarantee requires information that is not supplied.</p><nav><a href="#q1">Question 1</a><a href="#q2">Question 2</a><a href="#q3">Question 3</a><a href="#q4">Question 4</a><a href="#q5">Question 5</a><a href="#q6">Question 6</a><a href="#q7">Question 7</a><a href="#q8">Question 8</a><a href="#q9">Question 9</a><a href="#q10">Question 10</a></nav><section class="question" id="q1"><h2>Question 1</h2><p>Minimise sum_i w_i (y_i - X_i beta)^2 + lam * sum_{j&gt;=1} beta_j^2. The first column of X is the intercept and must not be penalised. Nonnegative finite weights are precisions; lam &gt;= 0. Inputs are finite real arrays with compatible shapes. If lam is zero and the design is rank deficient, return the minimum Euclidean norm minimiser. Explain the numerical implications as well as repairing the fixture.</p><pre><code>import numpy as np
+X = np.array([[1., 0.], [1., 1.], [1., 2.]])
+y = np.array([1., 2., 2.])
+w = np.array([1., 4., 1.])
+
+def fit(X, y, w, lam):
+    A = X * w[:, None]
+    b = y * w
+    return np.linalg.solve(
+        A.T @ A + lam * np.eye(X.shape[1]), A.T @ b
+    )
+
+print(np.round(fit(X, y, w, 1.), 6).tolist())</code></pre><p class="label">Actual output</p><pre><code>[1.16, 0.72]</code></pre><p>Diagnose, repair and justify the implementation. Propose adversarial tests and discuss its relevant costs and limitations.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q2"><h2>Question 2</h2><p>Return each row&#x27;s nearest OTHER row in Euclidean distance, breaking ties by the smallest original row index. x is a finite float64 matrix with at least two rows; squared coordinate differences fit float64. Coordinates can have a large common offset. Preserve x. The production input does not fit an n by n distance matrix in memory. Provide a correct bounded-block implementation and explain its time and memory costs.</p><pre><code>import numpy as np
+x = np.array([[1e9,1e9], [1e9+1,1e9],
+              [1e9+3,1e9], [1e9+8,1e9]])
+
+def nearest(x, block=2):
+    norms = np.einsum(&quot;ij,ij-&gt;i&quot;, x, x)
+    d2 = norms[:,None] + norms[None,:] - 2 * (x @ x.T)
+    d2 = np.maximum(d2, 0)
+    np.fill_diagonal(d2, np.inf)
+    return d2.argmin(axis=1)
+
+print(nearest(x).tolist())</code></pre><p class="label">Actual output</p><pre><code>[1, 0, 0, 0]</code></pre><p>Diagnose, repair and justify the implementation. Propose adversarial tests and discuss its relevant costs and limitations.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q3"><h2>Question 3</h2><p>keep_intervals returns True exactly when a query interval overlaps no blocked interval. All intervals are nonempty half-open [start,end), with finite numeric endpoints and start &lt; end. Inputs can be unsorted, nested or duplicated. Touching endpoints do not overlap. Preserve query order. Avoid an n by m overlap matrix; target O(m log m + n log m) time and O(m+n) auxiliary space.</p><pre><code>import numpy as np
+queries = np.array([[50,51],[100,101],[10,11],[11,12]])
+blocked = np.array([[0,100],[10,11]])
+
+def keep_intervals(queries, blocked):
+    if len(blocked) == 0:
+        return np.ones(len(queries), dtype=bool)
+    b = blocked[np.argsort(blocked[:,0])]
+    j = np.searchsorted(b[:,0], queries[:,1], side=&quot;right&quot;) - 1
+    overlaps = (j &gt;= 0) &amp; (b[np.maximum(j,0),1] &gt;= queries[:,0])
+    return ~overlaps
+
+print(keep_intervals(queries, blocked).tolist())</code></pre><p class="label">Actual output</p><pre><code>[True, True, False, False]</code></pre><p>Diagnose, repair and justify the implementation. Propose adversarial tests and discuss its relevant costs and limitations.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q4"><h2>Question 4</h2><p>gram(x, scale) must return scale * x.T @ x as a fresh mutable float64 array, for a finite real 2D input and finite scalar scale. Results must depend on values, shape and scale. Callers may mutate inputs between calls and mutate returned arrays. No caller mutates an input concurrently with the snapshot operation. Cache at most 128 entries. Discuss why a content-key cache may still be a poor performance choice.</p><pre><code>import numpy as np
+from functools import lru_cache
+x = np.array([[1.,2.],[3.,4.]])
+
+_cache = {}
+def gram(x, scale):
+    key = x.tobytes()
+    if key not in _cache:
+        _cache[key] = scale * (x.T @ x)
+    return _cache[key]
+
+a = gram(x, 1.)
+a[0,0] = -99.
+print(gram(x, 2.).tolist())
+print(gram(x.reshape(4,1), 1.).tolist())</code></pre><p class="label">Actual output</p><pre><code>[[-99.0, 14.0], [14.0, 20.0]]
+[[-99.0, 14.0], [14.0, 20.0]]</code></pre><p>Diagnose, repair and justify the implementation. Propose adversarial tests and discuss its relevant costs and limitations.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q5"><h2>Question 5</h2><p>For each arriving (entity, time, value), report the mean of that entity&#x27;s earlier observations in [time-3,time), or None if fewer than two exist. All observations at the current timestamp must be excluded, including earlier arrivals with the same timestamp. Per-entity times are nondecreasing across all batches; entities can interleave. Values are integers. Reject an out-of-order timestamp. Results must be invariant to arbitrary batch boundaries, including a boundary inside a tied timestamp. Retain only the time-window state and the current timestamp group per entity.</p><pre><code>from collections import deque
+rows = [
+    (&quot;A&quot;,0,1), (&quot;A&quot;,2,3), (&quot;A&quot;,2,7), (&quot;A&quot;,5,9),
+    (&quot;B&quot;,1,10), (&quot;B&quot;,2,20), (&quot;B&quot;,4,30), (&quot;A&quot;,6,11)
+]
+batches = [rows[:5], rows[5:]]
+
+def process(batches):
+    output = []
+    for batch in batches:
+        history = {}
+        for entity, t, value in batch:
+            q = history.setdefault(entity, deque())
+            while q and q[0][0] &lt; t - 3:
+                q.popleft()
+            output.append(
+                sum(v for _,v in q)/len(q) if len(q)&gt;=2 else None
+            )
+            q.append((t,value))
+    return output
+
+print(process(batches))</code></pre><p class="label">Actual output</p><pre><code>[None, None, 2.0, 5.0, None, None, None, None]</code></pre><p>Diagnose, repair and justify the implementation. Propose adversarial tests and discuss its relevant costs and limitations.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q6"><h2>Question 6</h2><p>Each partition returns (n, mean, M2), where M2 is the unnormalised centred cross-product matrix. Combine disjoint partitions to recover the overall mean and unbiased sample covariance M2/(N-1), using only these summaries. Partitions can be unequal or empty. Preserve input states. Require N &gt;= 2 for covariance. Explain and derive the merge formula; do not concatenate raw observations.</p><pre><code>import numpy as np
+
+def summarise(x):
+    if len(x) == 0:
+        d=x.shape[1]
+        return 0, np.zeros(d), np.zeros((d,d))
+    mean=x.mean(axis=0)
+    centred=x-mean
+    return len(x), mean, centred.T@centred
+
+a=np.array([[1.,2.],[3.,4.]])
+b=np.array([[10.,2.],[11.,4.],[12.,6.]])
+states=[summarise(a),summarise(b)]
+
+def combine(states):
+    nonempty=[s for s in states if s[0]]
+    n=sum(s[0] for s in nonempty)
+    mean=np.mean([s[1] for s in nonempty],axis=0)
+    m2=sum(s[2] for s in nonempty)
+    return mean,m2/(n-1)
+
+mean,cov=combine(states)
+print(np.round(mean,6).tolist())
+print(np.round(cov,6).tolist())</code></pre><p class="label">Actual output</p><pre><code>[6.5, 3.5]
+[[1.0, 1.5], [1.5, 2.5]]</code></pre><p>Diagnose, repair and justify the implementation. Propose adversarial tests and discuss its relevant costs and limitations.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q7"><h2>Question 7</h2><p>Estimate E[exp(0.1 Z)] for standard normal Z using antithetic pairs (Z,-Z). Each logical block specifies a unique nonnegative integer block_id and a positive integer number of pairs. Different blocks require independent random streams. Reordering or rescheduling these same logical blocks must leave the numerical result unchanged; changing the partition into logical blocks is a different experiment. Return estimate and estimated standard error. Aggregate compact block summaries, not all simulated paths. At least two pairs exist overall.</p><pre><code>import numpy as np
+tasks=[(0,4),(1,7),(2,5)]
+root_seed=123
+
+def simulate(tasks, root_seed):
+    values=[]
+    for block_id,n in tasks:
+        rng=np.random.default_rng(root_seed)
+        z=rng.standard_normal(n)
+        values.extend(np.exp(0.1*z))
+        values.extend(np.exp(-0.1*z))
+    values=np.asarray(values)
+    return values.mean(),values.std(ddof=1)/np.sqrt(len(values))
+
+estimate,se=simulate(tasks,root_seed)
+print(f&quot;estimate={estimate:.9f} se={se:.9f}&quot;)</code></pre><p class="label">Actual output</p><pre><code>estimate=1.003397672 se=0.014836951</code></pre><p>Diagnose, repair and justify the implementation. Propose adversarial tests and discuss its relevant costs and limitations.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q8"><h2>Question 8</h2><p>Within one asyncio event loop, concurrent requests for one key must share one computation. Cache successful immutable results. A cancelled waiter must receive cancellation without cancelling the shared work or other waiters; work is allowed to finish even if all waiters leave. Failed or internally cancelled work must be removable so a later call can retry. Do not start speculative duplicate work. Use ordinary task scheduling, not an eager task factory. Repair the class and explain ownership and cleanup.</p><pre><code>import asyncio
+
+class Cache:
+    def __init__(self, fetch):
+        self.fetch=fetch
+        self.tasks={}
+
+    async def get(self, key):
+        task=self.tasks.setdefault(
+            key, asyncio.create_task(self.fetch(key))
+        )
+        return await task
+
+async def demonstration():
+    calls=0
+    started=asyncio.Event()
+    release=asyncio.Event()
+
+    async def fetch(key):
+        nonlocal calls
+        calls+=1
+        started.set()
+        await release.wait()
+        return 42
+
+    cache=Cache(fetch)
+    a=asyncio.create_task(cache.get(&quot;x&quot;))
+    await started.wait()
+    b=asyncio.create_task(cache.get(&quot;x&quot;))
+    await asyncio.sleep(0)  # allow b to enter get
+    a.cancel()
+    release.set()
+    result=await asyncio.gather(a,b,return_exceptions=True)
+    try:
+        retry=await cache.get(&quot;x&quot;)
+    except asyncio.CancelledError:
+        retry=&quot;cancelled&quot;
+    await asyncio.sleep(0)
+    labels=[&quot;cancelled&quot; if isinstance(v,asyncio.CancelledError)
+            else v for v in result]
+    print(calls,labels,retry)
+
+asyncio.run(demonstration())</code></pre><p class="label">Actual output</p><pre><code>3 [&#x27;cancelled&#x27;, &#x27;cancelled&#x27;] cancelled</code></pre><p>Diagnose, repair and justify the implementation. Propose adversarial tests and discuss its relevant costs and limitations.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q9"><h2>Question 9</h2><p>For each decision, choose the newest active event for the same symbol that was available at the decision. Event and availability are different clocks. A revision replaces that event&#x27;s previous version only once available; DELETE withdraws that event, not the entire symbol. Resolve the latest available version of each event BEFORE selecting the newest active event. Event age must be at most ttl=5 inclusive. Return missing if none qualifies, preserving decision order. (symbol,event_min,available_min) keys and decision ids are unique; available_min&gt;=event_min; a DELETE price is missing. Inputs can be shuffled. Give a correct reference repair and a credible scalable design.</p><pre><code>import numpy as np
+import pandas as pd
+decisions=pd.DataFrame({
+    &quot;id&quot;:range(8), &quot;symbol&quot;:[&quot;A&quot;]*6+[&quot;B&quot;]*2,
+    &quot;time&quot;:[3,5,6,7,8,9,3,4]
+})
+quotes=pd.DataFrame({
+    &quot;symbol&quot;:[&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;B&quot;],
+    &quot;event_min&quot;:[0,2,2,2,1,4,2],
+    &quot;available_min&quot;:[0,3,5,6,7,8,4],
+    &quot;action&quot;:[&quot;SET&quot;,&quot;SET&quot;,&quot;SET&quot;,&quot;DELETE&quot;,&quot;SET&quot;,&quot;SET&quot;,&quot;SET&quot;],
+    &quot;price&quot;:[100.,102.,103.,np.nan,101.,104.,202.]
+})
+
+def reconstruct(decisions, quotes, ttl=5):
+    clean=quotes.loc[quotes.action.eq(&quot;SET&quot;)]
+    clean=clean.sort_values(&quot;available_min&quot;).drop_duplicates(
+        [&quot;symbol&quot;,&quot;event_min&quot;],keep=&quot;last&quot;
+    )
+    out=pd.merge_asof(
+        decisions.sort_values(&quot;time&quot;),
+        clean.sort_values(&quot;event_min&quot;),
+        by=&quot;symbol&quot;,left_on=&quot;time&quot;,right_on=&quot;event_min&quot;,
+        direction=&quot;backward&quot;,tolerance=ttl
+    )
+    return out.set_index(&quot;id&quot;).reindex(decisions[&quot;id&quot;])
+
+out=reconstruct(decisions,quotes)
+print([None if pd.isna(v) else float(v) for v in out.price])</code></pre><p class="label">Actual output</p><pre><code>[103.0, 104.0, 104.0, 104.0, 104.0, 104.0, 202.0, 202.0]</code></pre><p>Diagnose, repair and justify the implementation. Propose adversarial tests and discuss its relevant costs and limitations.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q10"><h2>Question 10</h2><p>A window of n&gt;=2 vectors has mean m and precision P = inverse(ridge*I + sum_i (x_i-m)(x_i-m).T), with fixed positive ridge. Replace outgoing old with incoming new. Update mean and P in O(d^2) arithmetic given m,P,old,new,n; do not silently switch to uncentred second moments. Preserve inputs. Signal numerically unsafe rank-one steps so the caller can rebuild from the retained window before publishing. You may use (A+c*v*v.T)^-1 = P - c*(P*v)*(P*v).T/(1+c*v.T*P*v). Derive the actual vectors and coefficients.</p><pre><code>import numpy as np
+x=np.array([[0.,0.],[1.,0.],[0.,1.],[1.,1.]])
+ridge=0.5
+mean=x.mean(0)
+centred=x-mean
+P=np.linalg.solve(
+    ridge*np.eye(2)+centred.T@centred,np.eye(2)
+)
+old=x[0]
+new=np.array([2.,2.])
+
+def step(mean, P, old, new, n):
+    v=P@old
+    removed=P+np.outer(v,v)/(1-old@v)
+    v=removed@new
+    updated=removed-np.outer(v,v)/(1+new@v)
+    return mean+(new-old)/n,updated
+
+m,p=step(mean,P,old,new,len(x))
+print(np.round(m,6).tolist())
+print(np.round(p,6).tolist())</code></pre><p class="label">Actual output</p><pre><code>[1.0, 1.0]
+[[0.385965, -0.280702], [-0.280702, 0.385965]]</code></pre><p>Diagnose, repair and justify the implementation. Propose adversarial tests and discuss its relevant costs and limitations.</p><p class="label">Notes</p><div class="notes"></div></section><footer>Senior Quantitative Analysis | Advanced revision 2 | 26 October 2026</footer></main></body></html>

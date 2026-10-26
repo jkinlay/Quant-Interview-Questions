@@ -1,2 +1,15 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Keep generated text portable and supplied source files byte-identical.
+*.py text eol=lf
+*.html text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.txt text eol=lf
+*.sha256 text eol=lf
+source_materials/*.csv -text
+*.docx binary
+
+.gitattributes text eol=lf
+.gitignore text eol=lf

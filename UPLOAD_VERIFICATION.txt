@@ -1,0 +1,39 @@
+interview_checks.py
+Q01: faulty run, model run and regressions PASS
+Q02: faulty run, model run and regressions PASS
+Q03: faulty run, model run and regressions PASS
+Q04: faulty run, model run and regressions PASS
+Q05: faulty run, model run and regressions PASS
+Q06: faulty run, model run and regressions PASS
+Q07: faulty run, model run and regressions PASS
+Q08: faulty run, model run and regressions PASS
+Q09: faulty run, model run and regressions PASS
+Q10: faulty run, model run and regressions PASS
+Q1: BAD '[1.16, 0.72]' GOOD '[1.5, 0.333333]'
+Q2: BAD '[1, 0, 0, 0]' GOOD '[1, 0, 1, 2]'
+Q3: BAD '[True, True, False, False]' GOOD '[False, True, False, False]'
+Q4: BAD '[[-99.0, 14.0], [14.0, 20.0]]\n[[-99.0, 14.0], [14.0, 20.0]]' GOOD '[[20.0, 28.0], [28.0, 40.0]]\n[[30.0]]'
+Q5: BAD '[None, None, 2.0, 5.0, None, None, None, None]' GOOD '[None, None, None, 5.0, None, None, 15.0, None]'
+Q6: BAD '[6.5, 3.5]\n[[1.0, 1.5], [1.5, 2.5]]' GOOD '[7.4, 3.6]\n[[25.3, 4.2], [4.2, 2.8]]'
+Q7: BAD 'estimate=1.003397672 se=0.014836951' GOOD 'estimate=1.003530191 se=0.001573312'
+Q8: BAD "3 ['cancelled', 'cancelled'] cancelled" GOOD "1 ['cancelled', 42] 42"
+Q9: BAD '[103.0, 104.0, 104.0, 104.0, 104.0, 104.0, 202.0, 202.0]' GOOD '[102.0, 103.0, None, None, 104.0, 104.0, None, 202.0]'
+Q10: BAD '[1.0, 1.0]\n[[0.385965, -0.280702], [-0.280702, 0.385965]]' GOOD '[1.0, 1.0]\n[[0.47619, -0.190476], [-0.190476, 0.47619]]'
+
+advanced_case_checks.py
+Covariance case: eigenvalues, quadratic form, shrinkage and storage PASS
+Monte Carlo case: fixed-draw equivalence, convergence, standard error and identity PASS
+Streaming case is a design exercise; no production transaction or storage system is claimed.
+
+case_checks.py --source-dir source_materials
+Alternative A: fixture, replay, empty and conflicts PASS
+Alternative B: interleaving, warm-up, eviction and separate state PASS
+Alternative C: fixture, empty and 100 random oracle comparisons PASS
+Adapted case: channel, month boundary, zero, gap and nonmutation PASS
+Supplied sources: profile and pooled aggregation assertions PASS
+
+_build_pack.py
+Replaced interviewer guide, candidate questions and candidate cases with advanced revision 2.
+
+Handout links and candidate-answer separation: PASS
+Source CSV and DOCX bytes preserved: PASS

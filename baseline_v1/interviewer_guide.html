@@ -1,0 +1,330 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Senior Quantitative Analysis interview guide</title><style>
+:root{color-scheme:light;--ink:#182332;--muted:#526171;--line:#ccd5df;}
+*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#f3f5f7;margin:0;line-height:1.6}
+main{max-width:1000px;margin:32px auto;padding:52px 64px;background:white;border:1px solid #e0e5eb}
+h1,h2,h3,h4{color:#000;line-height:1.2;break-after:avoid}h1{font-size:34px;margin:0 0 18px}h2{font-size:25px;margin:46px 0 17px}h3{font-size:19px;margin:26px 0 12px}h4{font-size:15px;margin:20px 0 8px}
+p{margin:10px 0 15px}li{margin:6px 0}ul,ol{padding-left:24px}a{color:#24548c;text-underline-offset:3px}nav{margin:24px 0 32px}nav a{display:inline-block;margin:3px 16px 3px 0}
+.meta{color:var(--muted);font-size:14px}.label{font-weight:700;margin-bottom:6px}
+pre{font-family:Consolas,"Courier New",monospace;font-size:13px;line-height:1.48;white-space:pre-wrap;overflow-wrap:anywhere;background:#f5f7f9;border:1px solid #dce2e9;padding:16px;margin:10px 0 18px;tab-size:4}
+code{font-family:inherit}table{width:100%;border-collapse:collapse;margin:18px 0 26px;font-size:14px;break-inside:auto}
+th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:middle;text-align:left}th{background:#223951;color:#fff;font-weight:600}tbody tr:nth-child(even){background:#f5f8fb}tr{break-inside:avoid}thead{display:table-header-group}
+.question{margin-top:48px;padding-top:1px}.answer{margin-top:25px}.small{font-size:13px}.rule{margin-top:22px;font-weight:700}
+footer{margin-top:44px;color:var(--muted);font-size:12px}.toolbar{max-width:1000px;margin:20px auto 0;font-size:14px}
+@media(max-width:720px){main{margin:0;padding:24px 20px;border:0}h1{font-size:29px}pre{font-size:12px;padding:12px}table{font-size:12px}th,td{padding:7px}.toolbar{padding:0 20px}}
+@media print{@page{size:A4;margin:17mm}body{background:white;font-size:10.5pt;line-height:1.4}main{max-width:none;margin:0;padding:0;border:0}h1{font-size:25pt}h2{font-size:18pt;margin-top:24pt}h3{font-size:14pt}h4{font-size:11pt}pre{font-size:9pt;line-height:1.3;padding:9pt;break-inside:avoid}table{font-size:9pt}th,td{padding:6pt}a{color:inherit;text-decoration:none}.toolbar,nav{display:none}.question,.case{break-before:page}.meta{font-size:9pt}footer{font-size:8pt}.notes{height:32mm;border-bottom:1px solid #ccc}.print-break{break-before:page}}
+</style></head><body><div class="toolbar">Printable interview materials · 26 October 2026 · Interviewer copy with answers</div><main><h1>Senior Quantitative Analysis interview guide</h1><p>Use a structured, supervised work sample: ask the candidate to explain a failure, repair it, and demonstrate how they know the repair works. Combine that with one short case in which requirements and data limitations emerge in stages.</p><p>The ten questions form a bank, not a single interview. Four selected questions plus one case are enough for a 75-minute round. This pack assumes practical Python, pandas and NumPy are relevant to the role. Difficulty and timing are proposed calibration levels, not measured hiring thresholds.</p><p>LLM access weakens an unsupervised test as evidence of independent coding ability. It does not remove the value of coding in an interview. A supervised repair and an unannounced change of requirement make the candidate&#x27;s reasoning and implementation visible.</p><nav><a href="#format">Interview format</a><a href="#bank">Question bank</a><a href="#attachment">Adapted case</a><a href="#alternatives">Alternative cases</a><a href="#score">Scoring</a><a href="#sources">Sources and verification</a></nav><h2 id="format">How to run round one</h2><table><thead><tr><th>Minutes</th><th>Activity</th><th>Interviewer action</th></tr></thead><tbody><tr><td>0 to 5</td><td>Introduction</td><td>Explain the format and allow a short silent reading period.</td></tr><tr><td>5 to 35</td><td>Four debugging exercises</td><td>Suggested route Q2, Q3, Q6 and Q8. Ask for a repair and a test.</td></tr><tr><td>35 to 60</td><td>One structured case</td><td>Use the adapted attachment or one alternative; include a small supervised coding step.</td></tr><tr><td>60 to 70</td><td>Extension and evidence gaps</td><td>Deepen one earlier task, test an edge case, or discuss scale.</td></tr><tr><td>70 to 75</td><td>Candidate questions</td><td>Finish consistently and record evidence immediately afterwards.</td></tr></tbody></table><ul><li>Use a company laptop with a prepared local editor or notebook. The interviewer stays present. Keep external assistants and communication tools unavailable for this exercise; a short printed or offline API reference is reasonable if offered consistently.</li><li>Give the intention, code and actual output together. Ask: what causes this result, what would you change, and what test would catch it? Let the candidate read silently before explaining.</li><li>Require at least one runnable repair. A whiteboard or spoken outline alone can miss whether someone can translate an idea into Python. If necessary, the interviewer can type under the candidate&#x27;s explicit direction.</li><li>Tell candidates that library syntax can be looked up in the provided reference. Score their choice of operations and tests, rather than exact recall of parameter names.</li><li>Use the same core route and staged hints for a hiring cohort. Record which hints were used. Rotate equivalent variants between cohorts after checking them.</li><li>Keep finance conventions, model selection theory and ML depth for round two. In round one, score Python correctness, data handling, testing, information timing and engineering judgement.</li><li>Q9 and Q10 are stretch items. Do not require every senior candidate to finish them, and do not let one memorised trick compensate for weak performance on core tasks.</li><li>For a 60-minute interview, use 5 minutes introduction, 25 minutes debugging, 20 minutes for one case, 5 minutes follow-up and 5 minutes candidate questions.</li></ul><h3>Consistent hints and follow-ups</h3><p>Start with no hint. If the candidate stalls, ask them to trace the smallest failing example. Next offer the question-specific hint below. Finally, identify the relevant area if needed and see whether they can complete the repair. Record the help given; do not silently compare a heavily prompted solution with an independent one.</p><p>Once a repair works, change one condition: shuffle input, add an empty group, repeat a key, or introduce a delayed record. Ask the candidate to predict the result before running it. One well-chosen change usually provides more evidence than rushing to another puzzle.</p><h2 id="bank">Ten debugging questions</h2><table><thead><tr><th>Question</th><th>Focus</th><th>Difficulty</th><th>Minutes</th></tr></thead><tbody><tr><td>Q1</td><td>Adjacent changes</td><td>1 of 5</td><td>3 to 4</td></tr><tr><td>Q2</td><td>Missing observations and valid zeroes</td><td>1 of 5</td><td>3 to 5</td></tr><tr><td>Q3</td><td>Unexpected state between calls</td><td>2 of 5</td><td>5 to 7</td></tr><tr><td>Q4</td><td>A stream counted twice</td><td>2 of 5</td><td>5 to 7</td></tr><tr><td>Q5</td><td>Labels lost during assignment</td><td>3 of 5</td><td>6 to 8</td></tr><tr><td>Q6</td><td>A join inflates the total</td><td>3 of 5</td><td>8 to 10</td></tr><tr><td>Q7</td><td>A square array hides a shape error</td><td>3 of 5</td><td>7 to 10</td></tr><tr><td>Q8</td><td>A rolling feature crosses an entity boundary</td><td>4 of 5</td><td>10 to 12</td></tr><tr><td>Q9</td><td>Variance disappears through cancellation</td><td>4 of 5</td><td>10 to 15</td></tr><tr><td>Q10</td><td>Historical records that were not yet available</td><td>5 of 5</td><td>15 to 20</td></tr></tbody></table><p>Scale: 1 easy, 2 straightforward, 3 intermediate, 4 hard, 5 very hard. These are reference solutions; accept equivalent implementations that meet the stated contract. Inputs outside the contract are follow-up material, not hidden requirements.</p><section class="question" id="q1"><h2>Question 1 Adjacent changes</h2><p>Difficulty 1 of 5 · Suggested time 3 to 4 minutes</p><h3>Candidate brief</h3><p>Return the change between each adjacent pair in a finite list of numbers, in order. An empty or one-element list returns an empty list. Do not change the input.</p><pre><code>def changes(values):
+    return [values[i] - values[i - 1]
+            for i in range(len(values))]
+
+print(changes([100, 105, 102]))</code></pre><p class="label">Actual output from the faulty code</p><pre><code>[-2, 5, -3]</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><div class="answer"><h3>Interviewer model answer</h3><p>At i = 0, negative indexing reads the last element, creating an unintended last-to-first change. Start at index 1. A zip of values with values[1:] is also correct.</p><pre><code>def changes(values):
+    return [values[i] - values[i - 1]
+            for i in range(1, len(values))]
+
+print(changes([100, 105, 102]))</code></pre><p class="label">Corrected output</p><pre><code>[5, -3]</code></pre><h4>Tests to expect</h4><p>Empty input; a singleton; constant values; negative changes; input unchanged.</p><h4>Hint</h4><p>Trace the first iteration and state what index -1 means.</p><h4>Follow-up</h4><p>How would you process a stream without storing all observations?</p><h4>Evidence of senior ability</h4><p>A senior candidate explains the boundary error, tests empty input, and can describe a one-pass iterator version. Do not demand that version in the warm-up.</p></div></section><section class="question" id="q2"><h2>Question 2 Missing observations and valid zeroes</h2><p>Difficulty 1 of 5 · Suggested time 3 to 5 minutes</p><h3>Candidate brief</h3><p>Calculate the arithmetic mean, excluding only None. Zero is a valid observation. Return None if there are no valid observations. Inputs contain finite numbers or None; NaN is outside this question&#x27;s contract.</p><pre><code>def mean_valid(values):
+    clean = [x for x in values if x]
+    return sum(clean) / len(clean) if clean else None
+
+print(mean_valid([0.0, 2.0, None, 4.0]))</code></pre><p class="label">Actual output from the faulty code</p><pre><code>3.0</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><div class="answer"><h3>Interviewer model answer</h3><p>The truth-value filter removes both None and numerical zero. An explicit identity check preserves zero. The empty-data policy is part of the specification, so returning None is intentional.</p><pre><code>def mean_valid(values):
+    clean = [x for x in values if x is not None]
+    return sum(clean) / len(clean) if clean else None
+
+print(mean_valid([0.0, 2.0, None, 4.0]))</code></pre><p class="label">Corrected output</p><pre><code>2.0</code></pre><h4>Tests to expect</h4><p>All missing; empty; all zero; mixed positive and negative; one valid observation.</p><h4>Hint</h4><p>Which different input values evaluate as false?</p><h4>Follow-up</h4><p>If NaN becomes an accepted missing value, how would you change the contract and tests?</p><h4>Evidence of senior ability</h4><p>Preserves economically meaningful zeroes and distinguishes a missing observation from an observed zero. A one-pass implementation is welcome but not required.</p></div></section><section class="question" id="q3"><h2>Question 3 Unexpected state between calls</h2><p>Difficulty 2 of 5 · Suggested time 5 to 7 minutes</p><h3>Candidate brief</h3><p>When bucket is omitted, start a new list for that call. If the caller supplies a list, append to that same list and return it.</p><pre><code>def record(value, bucket=[]):
+    bucket.append(value)
+    return bucket
+
+a = record(10)
+b = record(20)
+print(a, b, a is b)</code></pre><p class="label">Actual output from the faulty code</p><pre><code>[10, 20] [10, 20] True</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><div class="answer"><h3>Interviewer model answer</h3><p>The default list is created once at function definition. Both calls mutate and return the same object; a changes when the second call runs. Use None as a sentinel and create a new list inside the function. Do not use bucket or []: that would replace an explicitly supplied empty list.</p><pre><code>def record(value, bucket=None):
+    if bucket is None:
+        bucket = []
+    bucket.append(value)
+    return bucket
+
+a = record(10)
+b = record(20)
+print(a, b, a is b)</code></pre><p class="label">Corrected output</p><pre><code>[10] [20] False</code></pre><h4>Tests to expect</h4><p>Repeated omitted-argument calls; object identity; explicitly supplied empty and nonempty lists.</p><h4>Hint</h4><p>When is the default expression evaluated? Are a and b the same object?</p><h4>Follow-up</h4><p>What changes if the API must never mutate a supplied list?</p><h4>Evidence of senior ability</h4><p>Explains aliasing, preserves the specified ownership contract, and tests identity as well as equality.</p></div></section><section class="question" id="q4"><h2>Question 4 A stream counted twice</h2><p>Difficulty 2 of 5 · Suggested time 5 to 7 minutes</p><h3>Candidate brief</h3><p>Return (total, count) for a finite iterable of integers. It may be a single-use generator too large to materialise. Use one pass and constant auxiliary memory. Empty input returns (0, 0).</p><pre><code>def summarise(values):
+    total = sum(values)
+    count = sum(1 for _ in values)
+    return total, count
+
+print(summarise(x for x in [2, 4, 6]))</code></pre><p class="label">Actual output from the faulty code</p><pre><code>(12, 0)</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><div class="answer"><h3>Interviewer model answer</h3><p>The first sum exhausts the generator. The second traversal sees no values. Accumulate total and count in one loop. list(values) fixes this fixture but violates the memory requirement; tee may buffer the stream if its branches are consumed separately.</p><pre><code>def summarise(values):
+    total = count = 0
+    for value in values:
+        total += value
+        count += 1
+    return total, count
+
+print(summarise(x for x in [2, 4, 6]))</code></pre><p class="label">Corrected output</p><pre><code>(12, 3)</code></pre><h4>Tests to expect</h4><p>List and generator agree; empty and singleton streams; a source that rejects a second traversal.</p><h4>Hint</h4><p>Can this particular object be traversed a second time?</p><h4>Follow-up</h4><p>How would you handle malformed rows without silently losing information?</p><h4>Evidence of senior ability</h4><p>Distinguishes iterable from iterator, respects the memory constraint, and states O(n) time and O(1) auxiliary space.</p></div></section><section class="question" id="q5"><h2>Question 5 Labels lost during assignment</h2><p>Difficulty 3 of 5 · Suggested time 6 to 8 minutes</p><h3>Candidate brief</h3><p>Attach each score to the row with the matching id, preserving row order. Score labels are unique and every row id is present in scores; repeated ids in the rows are permitted.</p><pre><code>import pandas as pd
+
+def attach_scores(rows, scores):
+    return rows.assign(score=scores.to_numpy())
+
+rows = pd.DataFrame({&quot;id&quot;: [&quot;B&quot;, &quot;A&quot;]})
+scores = pd.Series([0.1, 0.9], index=[&quot;A&quot;, &quot;B&quot;])
+print(attach_scores(rows, scores).to_dict(&quot;records&quot;))</code></pre><p class="label">Actual output from the faulty code</p><pre><code>[{&#x27;id&#x27;: &#x27;B&#x27;, &#x27;score&#x27;: 0.1}, {&#x27;id&#x27;: &#x27;A&#x27;, &#x27;score&#x27;: 0.9}]</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><div class="answer"><h3>Interviewer model answer</h3><p>Converting to an array discards the labels and assigns by position. Match on id using map, or use a validated join. Merely assigning the labelled Series directly also fails here because rows has an integer index rather than an id index.</p><pre><code>import pandas as pd
+
+def attach_scores(rows, scores):
+    return rows.assign(score=rows[&quot;id&quot;].map(scores))
+
+rows = pd.DataFrame({&quot;id&quot;: [&quot;B&quot;, &quot;A&quot;]})
+scores = pd.Series([0.1, 0.9], index=[&quot;A&quot;, &quot;B&quot;])
+print(attach_scores(rows, scores).to_dict(&quot;records&quot;))</code></pre><p class="label">Corrected output</p><pre><code>[{&#x27;id&#x27;: &#x27;B&#x27;, &#x27;score&#x27;: 0.9}, {&#x27;id&#x27;: &#x27;A&#x27;, &#x27;score&#x27;: 0.1}]</code></pre><h4>Tests to expect</h4><p>Shuffle score order; reorder rows; repeated row ids; nondefault row index; empty rows; input unchanged.</p><h4>Hint</h4><p>Which labels survive to_numpy, and which labels should determine the match?</p><h4>Follow-up</h4><p>What policy would you choose for missing scores or duplicate score labels?</p><h4>Evidence of senior ability</h4><p>Separates position, index, and business key. Proposes explicit duplicate and unmatched-key checks when the contract broadens.</p></div></section><section class="question" id="q6"><h2>Question 6 A join inflates the total</h2><p>Difficulty 3 of 5 · Suggested time 8 to 10 minutes</p><h3>Candidate brief</h3><p>Attach one category to each sale without changing the number of sales or their total quantity. The lookup may contain exact repeated rows, which may be collapsed. Conflicting categories for a sku and unmatched sale skus must raise an error. Sale rows are legitimate separate records. All keys and categories are nonmissing strings.</p><pre><code>import pandas as pd
+
+def enrich(sales, lookup):
+    return sales.merge(lookup, on=&quot;sku&quot;)
+
+sales = pd.DataFrame({
+    &quot;sale_id&quot;: [1, 2], &quot;sku&quot;: [&quot;A&quot;, &quot;B&quot;], &quot;qty&quot;: [10, 20]
+})
+lookup = pd.DataFrame({
+    &quot;sku&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;], &quot;category&quot;: [&quot;X&quot;, &quot;X&quot;, &quot;Y&quot;]
+})
+out = enrich(sales, lookup)
+print(len(out), int(out[&quot;qty&quot;].sum()))</code></pre><p class="label">Actual output from the faulty code</p><pre><code>3 40</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><div class="answer"><h3>Interviewer model answer</h3><p>The two A lookup rows each match the same sale, multiplying it. Collapse exact lookup duplicates only; a many-to-one validation then rejects conflicting mappings. A left join preserves sales and the merge indicator detects missing matches. Deduplicating the merged facts or arbitrarily keeping one category can hide a real problem.</p><pre><code>import pandas as pd
+
+def enrich(sales, lookup):
+    unique = lookup.drop_duplicates()
+    out = sales.merge(
+        unique, on=&quot;sku&quot;, how=&quot;left&quot;,
+        validate=&quot;many_to_one&quot;, indicator=True
+    )
+    if out[&quot;_merge&quot;].ne(&quot;both&quot;).any():
+        raise ValueError(&quot;Unmatched sku&quot;)
+    return out.drop(columns=&quot;_merge&quot;)
+
+sales = pd.DataFrame({
+    &quot;sale_id&quot;: [1, 2], &quot;sku&quot;: [&quot;A&quot;, &quot;B&quot;], &quot;qty&quot;: [10, 20]
+})
+lookup = pd.DataFrame({
+    &quot;sku&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;], &quot;category&quot;: [&quot;X&quot;, &quot;X&quot;, &quot;Y&quot;]
+})
+out = enrich(sales, lookup)
+print(len(out), int(out[&quot;qty&quot;].sum()))</code></pre><p class="label">Corrected output</p><pre><code>2 30</code></pre><h4>Tests to expect</h4><p>Row count and total conserved; legitimate repeated sales retained; conflicting lookup rejected; unmatched sku rejected; empty sales accepted.</p><h4>Hint</h4><p>How many output rows can one A sale produce?</p><h4>Follow-up</h4><p>What checks would you put before and after a production join?</p><h4>Evidence of senior ability</h4><p>Reasons about table grain and join cardinality, does not delete valid facts, and makes invalid states visible.</p></div></section><section class="question" id="q7"><h2>Question 7 A square array hides a shape error</h2><p>Difficulty 3 of 5 · Suggested time 7 to 10 minutes</p><h3>Candidate brief</h3><p>For a 2D array x with one observation per row and one variable per column, compute the weighted sum of variables for each row. w is a column vector of shape (number of variables, 1). Reject incompatible shapes. Inputs are finite real numbers.</p><pre><code>import numpy as np
+
+def weighted_rows(x, w):
+    return (x * w).sum(axis=1)
+
+x = np.array([[1., 2.], [3., 4.]])
+w = np.array([[0.25], [0.75]])
+print(weighted_rows(x, w).tolist())</code></pre><p class="label">Actual output from the faulty code</p><pre><code>[0.75, 5.25]</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><div class="answer"><h3>Interviewer model answer</h3><p>With these square inputs, broadcasting applies the weights down the rows rather than across the variables. The valid shape masks the wrong calculation. A matrix-vector product expresses the intended reduction. (x * w.T).sum(axis=1) also works under the stated shape contract.</p><pre><code>import numpy as np
+
+def weighted_rows(x, w):
+    x, w = np.asarray(x), np.asarray(w)
+    if x.ndim != 2 or w.shape != (x.shape[1], 1):
+        raise ValueError(&quot;Incompatible shapes&quot;)
+    return x @ w[:, 0]
+
+x = np.array([[1., 2.], [3., 4.]])
+w = np.array([[0.25], [0.75]])
+print(weighted_rows(x, w).tolist())</code></pre><p class="label">Corrected output</p><pre><code>[1.75, 3.75]</code></pre><h4>Tests to expect</h4><p>Non-square inputs; single active variable; output shape; no rows; incompatible weights.</p><h4>Hint</h4><p>Write the shapes next to the multiplication. Which axis does each weight vary along?</p><h4>Follow-up</h4><p>What could go wrong if you simply flatten every incoming array?</p><h4>Evidence of senior ability</h4><p>Explains broadcasting using dimensions and deliberately tests a non-square case. Flattening is acceptable only when justified by the input contract.</p></div></section><section class="question" id="q8"><h2>Question 8 A rolling feature crosses an entity boundary</h2><p>Difficulty 4 of 5 · Suggested time 10 to 12 minutes</p><h3>Candidate brief</h3><p>For each entity and day, return the mean of that entity&#x27;s previous two observations, excluding the current observation. Return missing until two previous observations exist. Sort the output by entity and day. Keys are unique; each entity is observed daily without gaps in this fixture.</p><pre><code>import pandas as pd
+
+def prior_means(df):
+    out = df.sort_values([&quot;entity&quot;, &quot;day&quot;]).copy()
+    out[&quot;prior_mean&quot;] = (
+        out.groupby(&quot;entity&quot;)[&quot;qty&quot;]
+        .transform(lambda s: s.rolling(2, min_periods=2).mean())
+        .shift(1)
+    )
+    return out
+
+df = pd.DataFrame({
+    &quot;entity&quot;: [&quot;B&quot;, &quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;B&quot;],
+    &quot;day&quot;: [2, 3, 1, 1, 2, 3],
+    &quot;qty&quot;: [200, 30, 10, 100, 20, 300]
+})
+out = prior_means(df)
+print(out[[&quot;entity&quot;, &quot;day&quot;, &quot;prior_mean&quot;]]
+      .to_csv(index=False, na_rep=&quot;NA&quot;), end=&quot;&quot;)</code></pre><p class="label">Actual output from the faulty code</p><pre><code>entity,day,prior_mean
+A,1,NA
+A,2,NA
+A,3,15.0
+B,1,25.0
+B,2,NA
+B,3,150.0</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><div class="answer"><h3>Interviewer model answer</h3><p>The rolling calculation is grouped, but the final shift acts on the entire concatenated Series. It moves A&#x27;s final value into B&#x27;s first row. Put the shift inside each group. A global shift before grouping can create a similar boundary problem.</p><pre><code>import pandas as pd
+
+def prior_means(df):
+    out = df.sort_values([&quot;entity&quot;, &quot;day&quot;]).copy()
+    out[&quot;prior_mean&quot;] = (
+        out.groupby(&quot;entity&quot;)[&quot;qty&quot;]
+        .transform(
+            lambda s: s.shift(1).rolling(2, min_periods=2).mean()
+        )
+    )
+    return out
+
+df = pd.DataFrame({
+    &quot;entity&quot;: [&quot;B&quot;, &quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;B&quot;],
+    &quot;day&quot;: [2, 3, 1, 1, 2, 3],
+    &quot;qty&quot;: [200, 30, 10, 100, 20, 300]
+})
+out = prior_means(df)
+print(out[[&quot;entity&quot;, &quot;day&quot;, &quot;prior_mean&quot;]]
+      .to_csv(index=False, na_rep=&quot;NA&quot;), end=&quot;&quot;)</code></pre><p class="label">Corrected output</p><pre><code>entity,day,prior_mean
+A,1,NA
+A,2,NA
+A,3,15.0
+B,1,NA
+B,2,NA
+B,3,150.0</code></pre><h4>Tests to expect</h4><p>First two rows of every entity missing; shuffled input invariant; changing the current observation does not change its feature; groups independent; empty input.</p><h4>Hint</h4><p>Is the final shift still inside a group operation?</p><h4>Follow-up</h4><p>How does &#x27;two observations&#x27; differ from &#x27;two calendar days&#x27; if dates are missing?</p><h4>Evidence of senior ability</h4><p>Tests the information boundary and group independence, not just the displayed middle rows. Identifies how missing dates would change the specification.</p></div></section><section class="question" id="q9"><h2>Question 9 Variance disappears through cancellation</h2><p>Difficulty 4 of 5 · Suggested time 10 to 15 minutes</p><h3>Candidate brief</h3><p>Compute population variance (divide by n) for a finite, possibly single-use iterable of finite floats. Use one pass and constant auxiliary memory. Empty input raises ValueError; a singleton has variance zero. The fixture has a large level and small spread.</p><pre><code>def population_variance(values):
+    n = 0
+    total = total_sq = 0.0
+    for x in values:
+        n += 1
+        total += x
+        total_sq += x * x
+    if n == 0:
+        raise ValueError(&quot;Empty input&quot;)
+    return total_sq / n - (total / n) ** 2
+
+values = [1e9 + 1, 1e9 + 2, 1e9 + 3]
+print(f&quot;{population_variance(iter(values)):.6f}&quot;)</code></pre><p class="label">Actual output from the faulty code</p><pre><code>0.000000</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><div class="answer"><h3>Interviewer model answer</h3><p>The two terms in E[x squared] minus E[x] squared are large and nearly equal. Floating-point rounding destroys the small difference. The repair uses an online mean and a sum of squared deviations (Welford&#x27;s recurrence). Clipping a negative result to zero would not recover lost accuracy. This method improves stability; it does not make floating-point arithmetic exact.</p><pre><code>def population_variance(values):
+    n = 0
+    mean = m2 = 0.0
+    for x in values:
+        n += 1
+        delta = x - mean
+        mean += delta / n
+        m2 += delta * (x - mean)
+    if n == 0:
+        raise ValueError(&quot;Empty input&quot;)
+    return m2 / n
+
+values = [1e9 + 1, 1e9 + 2, 1e9 + 3]
+print(f&quot;{population_variance(iter(values)):.6f}&quot;)</code></pre><p class="label">Corrected output</p><pre><code>0.666667</code></pre><h4>Tests to expect</h4><p>Compare with an independent reference; translate small data by a large constant; constant values; singleton; empty; one-use iterator.</p><h4>Hint</h4><p>The mathematical identity is correct. What happens when two rounded numbers near 10^18 are subtracted?</p><h4>Follow-up</h4><p>Explain the update for m2, or propose a centred two-pass calculation and explain why it misses the streaming requirement.</p><h4>Evidence of senior ability</h4><p>Recognises numerical cancellation. Full repair credit requires meeting the one-pass contract; an accurate two-pass proposal earns partial credit. Do not make recall of the algorithm&#x27;s name a requirement.</p></div></section><section class="question" id="q10"><h2>Question 10 Historical records that were not yet available</h2><p>Difficulty 5 of 5 · Suggested time 15 to 20 minutes</p><h3>Candidate brief</h3><p>Attach a price to each decision, preserving decision order. Times are integer minutes from a common origin. For the same symbol, eligible quotes have event_min &lt;= decision_min, available_min &lt;= decision_min, and event age at most 5 minutes inclusive. Choose the greatest event_min, then the greatest available_min for revisions of that event. A late older event must not replace a newer event. Return missing if none qualifies. Decision ids are unique. Quote (symbol, event_min, available_min) keys are unique. Inputs contain no missing fields and available_min &gt;= event_min. A clear reference implementation is sufficient; discuss scaling separately.</p><pre><code>import pandas as pd
+
+def attach_prices(decisions, quotes):
+    out = pd.merge_asof(
+        decisions.sort_values(&quot;decision_min&quot;),
+        quotes.sort_values(&quot;event_min&quot;, kind=&quot;stable&quot;),
+        by=&quot;symbol&quot;,
+        left_on=&quot;decision_min&quot;, right_on=&quot;event_min&quot;,
+        direction=&quot;backward&quot;, tolerance=5
+    )
+    return out.set_index(&quot;id&quot;).reindex(decisions[&quot;id&quot;])
+
+decisions = pd.DataFrame({
+    &quot;id&quot;: [0, 1, 2, 3, 4, 5],
+    &quot;symbol&quot;: [&quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;A&quot;, &quot;C&quot;, &quot;A&quot;],
+    &quot;decision_min&quot;: [3, 3, 1, 7, 3, 8]
+})
+quotes = pd.DataFrame({
+    &quot;symbol&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;A&quot;],
+    &quot;event_min&quot;: [0, 1, 1, 2, 2, 2, -1],
+    &quot;available_min&quot;: [0, 1, 2, 4, 5, 6, 7],
+    &quot;price&quot;: [100., 101., 200., 102., 202., 103., 99.]
+})
+out = attach_prices(decisions, quotes)
+print([None if pd.isna(v) else float(v) for v in out[&quot;price&quot;]])</code></pre><p class="label">Actual output from the faulty code</p><pre><code>[103.0, 202.0, 101.0, 103.0, None, None]</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><div class="answer"><h3>Interviewer model answer</h3><p>The event-time join uses records and revisions that arrived after the decision. Sorting by event time cannot enforce availability. Joining only on availability is also insufficient: the old event arriving at minute 7 must not override event 2. Filter both clocks, then rank by event and revision availability. The fixture&#x27;s corrections are material: at minute 3, A&#x27;s price is 101 and B&#x27;s is 200. This reference is intentionally small-data code.</p><pre><code>import pandas as pd
+
+def attach_prices(decisions, quotes):
+    prices = []
+    for d in decisions.itertuples(index=False):
+        eligible = quotes.loc[
+            quotes[&quot;symbol&quot;].eq(d.symbol)
+            &amp; quotes[&quot;available_min&quot;].le(d.decision_min)
+            &amp; quotes[&quot;event_min&quot;].between(
+                d.decision_min - 5, d.decision_min
+            )
+        ]
+        if eligible.empty:
+            prices.append(float(&quot;nan&quot;))
+        else:
+            latest = eligible.sort_values(
+                [&quot;event_min&quot;, &quot;available_min&quot;]
+            ).iloc[-1]
+            prices.append(float(latest[&quot;price&quot;]))
+    return decisions.assign(price=prices).set_index(&quot;id&quot;)
+
+decisions = pd.DataFrame({
+    &quot;id&quot;: [0, 1, 2, 3, 4, 5],
+    &quot;symbol&quot;: [&quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;A&quot;, &quot;C&quot;, &quot;A&quot;],
+    &quot;decision_min&quot;: [3, 3, 1, 7, 3, 8]
+})
+quotes = pd.DataFrame({
+    &quot;symbol&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;A&quot;],
+    &quot;event_min&quot;: [0, 1, 1, 2, 2, 2, -1],
+    &quot;available_min&quot;: [0, 1, 2, 4, 5, 6, 7],
+    &quot;price&quot;: [100., 101., 200., 102., 202., 103., 99.]
+})
+out = attach_prices(decisions, quotes)
+print([None if pd.isna(v) else float(v) for v in out[&quot;price&quot;]])</code></pre><p class="label">Corrected output</p><pre><code>[101.0, 200.0, 101.0, 103.0, None, None]</code></pre><h4>Tests to expect</h4><p>Future arrivals cannot change earlier answers; revision before and after release; shuffled quotes invariant; exact boundary ages; late older record; missing symbol; stale quote; empty inputs.</p><h4>Hint</h4><p>Which timestamp says when a record describes the world, and which says when it became usable?</p><h4>Follow-up</h4><p>How would you implement this for millions of decisions without scanning all quotes for each decision?</p><h4>Evidence of senior ability</h4><p>Handles both time axes and revisions, preserves identity and order, and recognises reference-code cost. A possible scale-up is a sweep in availability order, maintaining each symbol&#x27;s newest eligible event and revision; explain expiry and tie rules. Under available_min &gt;= event_min, the newest event also determines whether any quote passes the age limit.</p></div></section><section class="case" id="attachment"><h2>Adapt the supplied forecasting case</h2><p>The supplied exercise is useful, but its original deliverable is too broad for a short first-round interview. It asks for a 12-month forecast and code in Python or R. Reframe it as a Python data-engineering and specification discussion, then retain the modelling depth for round two.</p><h3>What the actual files reveal</h3><table><thead><tr><th>Observation</th><th>Verified evidence</th><th>Interview implication</th></tr></thead><tbody><tr><td>Date coverage in both files</td><td>1 January 1810 to 31 December 1816; 2,557 daily dates and 84 calendar months.</td><td>The brief&#x27;s six-year description is inconsistent with the files.</td></tr><tr><td>Bullet sales</td><td>30,684 rows: 15,342 TF and 15,342 RS.</td><td>Filter the intended channel explicitly.</td></tr><tr><td>Missing identifiers</td><td>Every RS row has missing Maker and Model; TF rows have both.</td><td>The requested model-level RS target is not fully identified.</td></tr><tr><td>Shared bullet types</td><td>A occurs with three maker/model pairs; B with two; C with one in TF.</td><td>Compatibility does not provide a unique allocation for A or B.</td></tr><tr><td>Repeated visible RS keys</td><td>Each date has three A rows, two B rows and one C row.</td><td>A date and bullet label do not identify a unique underlying series.</td></tr><tr><td>Exact repeated RS records</td><td>14 rows repeat all visible fields beyond their first occurrence.</td><td>They may be legitimate different series with lost identifiers; do not blindly delete them.</td></tr><tr><td>Handgun sales</td><td>15,342 rows across six maker/model pairs; composite date/maker/model keys are unique.</td><td>Model labels are reused across makers; Model alone is not a safe join key.</td></tr></tbody></table><p>All three bullet labels have records for every date, and the observed quantities are nonnegative. There are no missing dates at that pooled label level. These checks do not prove that the underlying series identities or business meaning are correct.</p><p>The main limitation is identifiability. The TF compatibility table is one-to-many for A and B; joining it to pooled RS totals would duplicate quantities or impose an unsupported allocation. The apparent order of rows is not a documented business key. Forward-filling maker/model or assigning consecutive blocks to models would require authoritative confirmation.</p><p>The C label has one observed TF association, but inferring its RS attribution still assumes that compatibility is exhaustive, stable and encoded consistently across channels. That does not resolve A or B. For full model-level forecasts, request a stable source series id on every RS record and an authoritative mapping to maker/model, or explicitly agree an allocation model and label its estimates as assumption-dependent.</p><h3>Candidate prompt</h3><p>You are designing a Python process to forecast monthly replacement sales for the next 12 months. Two files contain historical bullet sales and handgun sales. Bullet sales have two channels: TF, sold together with firearms, and RS, replacements. The requested outputs are replacement sales by bullet type and by handgun maker and model. Explain the data checks and transformations you would implement, sketch the process, and write one small transformation with tests. You do not need to fit a forecasting model during this interview. State any output you cannot support from the supplied information.</p><table><thead><tr><th>File</th><th>Columns</th></tr></thead><tbody><tr><td>bullets_sales.csv</td><td>Date, Maker, Model, Bullets, Channel, Quantity</td></tr><tr><td>handgun_sales.csv</td><td>Date, Maker, Model, Quantity</td></tr></tbody></table><h3>A 25 minute staged discussion</h3><table><thead><tr><th>Time</th><th>Interviewer action</th><th>Evidence to look for</th></tr></thead><tbody><tr><td>0 to 4 minutes</td><td>Give the prompt, schemas and a few rows.</td><td>Clarifies monthly frequency, target grain, forecast origin and meaning of Quantity.</td></tr><tr><td>4 to 10 minutes</td><td>Reveal the profile and compatibility counts above.</td><td>Recognises missing identity, distinguishes legitimate repeated rows from ingestion duplicates, asks for source keys.</td></tr><tr><td>10 to 17 minutes</td><td>Confirm for this exercise that RS rows are distinct additive sales. Ask for monthly pooled RS aggregation by bullet label.</td><td>Writes a clear, testable transformation; preserves quantities; does not fabricate a maker/model allocation.</td></tr><tr><td>17 to 22 minutes</td><td>Ask for two tests and an evaluation outline. State that future realised handgun sales are unavailable.</td><td>Tests channel, totals and time boundaries; uses only information available at the forecast origin.</td></tr><tr><td>22 to 25 minutes</td><td>Ask what they would deliver today and what is blocked.</td><td>Can deliver conditional pooled outputs and a data-quality note; gives a precise request for the unresolved model-level target.</td></tr></tbody></table><h3>Model discussion</h3><ul><li>Clarify whether &#x27;12 months ahead&#x27; means a monthly path for months 1 through 12, a single month-12 value, or a 12-month total. Set the forecast origin explicitly. A sensible exercise convention is a monthly January to December 1817 path from 31 December 1816.</li><li>Identify the raw and target grains. Use Maker plus Model for handgun keys. Treat missing RS identity as a source issue and do not use forward-fill, row order or a many-to-many join as an undocumented repair.</li><li>Parse dates explicitly, verify accepted channels and bullet labels, inspect Quantity units and missingness, and check calendar coverage. Keep missing observations distinct from true zero sales.</li><li>Once the interviewer confirms additive RS rows, aggregate by calendar month and bullet label. Compare row-level and aggregated totals. Keep the original data and the assumptions used.</li><li>Start with a seasonal-naive monthly baseline: forecast a month using the same month of the previous year. Its value is as a benchmark, not a presumed best model. Do not promise accuracy without evaluation.</li><li>Use whole future time blocks across all series, with an actual 12-month forecast from each historical origin. An example is training through 1813 to predict 1814, through 1814 to predict 1815, and holding 1816 for final evaluation using data through 1815.</li><li>Any transformations learned from data, feature selection and parameter tuning must use the training period at each origin. Do not populate later forecast-month lags with realised target values unless the evaluation explicitly represents an updating one-step process.</li><li>Only use future covariates available at that historical origin. Historical handgun sales and a statement about reliable TF estimates do not establish that future handgun sales are known. Use separate covariate forecasts or scenarios when necessary.</li><li>Evaluate monthly absolute error by bullet label and aggregate, with an explicit weighting rule if scale varies. Be wary of percentage errors when actuals are zero and of aggregate errors hiding offsetting mistakes. Discuss uncertainty and stockout costs in round two.</li><li>Return an output with forecast_origin, target_month, horizon, level, bullet or model key, forecast and model_version, plus data-quality findings and assumptions. If intervals are included, evaluate their coverage separately.</li></ul><h3>A suitable supervised coding step</h3><p>Ask the candidate to implement monthly_rs after confirming the additive-row assumption. For this small transformation, state that Quantity is already a validated nonnegative integer and Channel has already been validated. Keep source validation in a separate step.</p><pre><code>import pandas as pd
+
+def monthly_rs(bullets):
+    # Contract: the owner has confirmed all RS rows are additive.
+    rs = bullets.loc[bullets[&quot;Channel&quot;].eq(&quot;RS&quot;)].copy()
+    if rs[&quot;Bullets&quot;].isna().any():
+        raise ValueError(&quot;Missing bullet label&quot;)
+    rs[&quot;Date&quot;] = pd.to_datetime(
+        rs[&quot;Date&quot;], format=&quot;%Y-%m-%d&quot;, errors=&quot;raise&quot;
+    )
+    rs[&quot;Month&quot;] = rs[&quot;Date&quot;].dt.to_period(&quot;M&quot;).dt.to_timestamp()
+    return (
+        rs.groupby([&quot;Month&quot;, &quot;Bullets&quot;], as_index=False)[&quot;Quantity&quot;]
+        .sum(min_count=1)
+        .sort_values([&quot;Month&quot;, &quot;Bullets&quot;])
+        .reset_index(drop=True)
+    )</code></pre><p>Test with an RS row and a TF row on the same date, records on the last and first days of adjacent months, several RS rows for the same label, an observed zero, and shuffled input. Assert one row per month/label, conservation of the RS total, and no input mutation. Do not fill unobserved months with zero without a business rule.</p><p>On the supplied files, this transformation produces 252 observed month/label rows, conditional on that additive-row assumption. It does not solve the missing maker/model allocation. A candidate who explicitly explains that distinction is showing useful judgement.</p><h3>What belongs in round two</h3><p>Extend the same case into stock-versus-flow reasoning, replacement demand lags, installed-base and survival models, seasonality, structural change, pooled versus separate estimation, forecast reconciliation and uncertainty. Discuss ML only after agreeing the information set and evaluation design. Remove the historical narrative or rename the products as equipment and replacement components if that makes the brief clearer.</p></section><section class="case" id="alternatives"><h2>Three alternative case discussions</h2><p>For a first round whose main objective is Python proficiency, Alternative A is my preferred default. It tests a small implementable contract and then exposes production design judgement. B is best for stateful services; C is best for research data pipelines. Each fits about 25 minutes with one 8 to 10 minute supervised coding step. Use one case per interview.</p><h3>Alternative A Reliable event ingestion</h3><p>Design a function that computes net quantity by sku from event deliveries. delta is a signed change. The same event_id may be delivered repeatedly; identical business payloads count once. Reuse of an event_id with a different sku or delta is an error. Keep skus with a zero net result. Delivery time is metadata, not part of the business payload. Start with the rows below, then explain how the design changes across daily batches.</p><table><thead><tr><th>event_id</th><th>sku</th><th>delta</th></tr></thead><tbody><tr><td>e1</td><td>X</td><td>10</td></tr><tr><td>e2</td><td>X</td><td>-3</td></tr><tr><td>e1</td><td>X</td><td>10</td></tr><tr><td>e3</td><td>Y</td><td>5</td></tr><tr><td>e4</td><td>X</td><td>-7</td></tr><tr><td>e5</td><td>Y</td><td>-2</td></tr></tbody></table><h4>Staged prompts</h4><ul><li>First five minutes: ask for the data contract, including missing ids, invalid quantities and the meaning of a repeated id.</li><li>Next ten minutes: implement the in-memory reference function and test an exact replay, a conflicting replay and a zero net result.</li><li>Next five minutes: reveal that the next file overlaps yesterday&#x27;s events and the process can fail between writing totals and recording processed ids.</li><li>Final five minutes: ask for a durable state design, replay behaviour and an observable failure report.</li></ul><h4>Model answer</h4><p>The fixture returns {&#x27;X&#x27;: 0, &#x27;Y&#x27;: 3}. Count each logical event once, retain zero-valued results, and reject conflicting payloads instead of keeping the first or last silently. The local reference below is O(n) expected time with O(u + s) state for u distinct event ids and s skus.</p><pre><code>def net_quantities(events):
+    seen = {}
+    totals = {}
+    for event in events:
+        eid = event[&quot;event_id&quot;]
+        payload = (event[&quot;sku&quot;], event[&quot;delta&quot;])
+        if eid in seen:
+            if seen[eid] != payload:
+                raise ValueError(&quot;Conflicting event payload&quot;)
+            continue
+        seen[eid] = payload
+        sku, delta = payload
+        totals[sku] = totals.get(sku, 0) + delta
+    return totals</code></pre><p>Across batches, the processed-event registry must persist. Recording an accepted event and applying its quantity change must happen atomically, for example within one database transaction with a unique event-id constraint. Retrying then becomes idempotent. Define whether corrections are new reversing events or versioned replacements. A fingerprint alone must not silently ignore a changed payload under the same id.</p><p>Tests: exact replay within and across batches; conflicting sku or delta; empty input; negative and zero deltas; independent skus; simulated failure and retry. Reject or quarantine invalid records according to a stated policy; do not count them as successful.</p><h4>Strong evidence and round two extension</h4><p>Strong candidates distinguish event identity from row equality, keep the implementation simple, and understand why persistent deduplication and total updates must agree. In round two, adapt this to trade corrections, positions and P&amp;L reconciliation after explicitly teaching any required domain conventions.</p><h3>Alternative B A small rolling statistics service</h3><p>Implement an object with update(entity, value). For each entity, retain its latest three accepted observations and return their mean once three exist; otherwise return None. The mean includes the current observation. Events initially arrive in order for each entity. Entity keys are strings and values are finite numbers. State the memory cost, then discuss how duplicate deliveries and late events would change the contract.</p><table><thead><tr><th>Entity</th><th>Value</th><th>Expected returned mean</th></tr></thead><tbody><tr><td>A</td><td>10</td><td>None</td></tr><tr><td>B</td><td>100</td><td>None</td></tr><tr><td>A</td><td>20</td><td>None</td></tr><tr><td>A</td><td>30</td><td>20</td></tr><tr><td>B</td><td>200</td><td>None</td></tr><tr><td>A</td><td>40</td><td>30</td></tr><tr><td>B</td><td>300</td><td>200</td></tr></tbody></table><h4>Staged prompts</h4><ul><li>Ask the candidate to sketch the state and walk through interleaved entities.</li><li>Implement update and test warm-up, the fourth observation, and independence between entities.</li><li>Reveal duplicate request ids. Ask what makes an update idempotent and what happens if the same id carries a different value.</li><li>Reveal out-of-order timestamps. Ask whether &#x27;latest&#x27; means arrival order or event time, and whether published results must be corrected.</li></ul><h4>Model answer</h4><pre><code>from collections import deque
+
+class RollingMean:
+    def __init__(self):
+        self.windows = {}
+        self.totals = {}
+
+    def update(self, entity, value):
+        window = self.windows.setdefault(entity, deque())
+        total = self.totals.get(entity, 0)
+        if len(window) == 3:
+            total -= window.popleft()
+        window.append(value)
+        total += value
+        self.totals[entity] = total
+        return total / 3 if len(window) == 3 else None</code></pre><p>The reference stores a deque and running total per entity, taking O(1) work per accepted update and O(3s) value storage for s active entities, plus dictionary overhead. On the fourth update for an entity, subtract the outgoing value before adding the new one. State grows with the number of active entities; an eviction policy needs an explicit business contract.</p><p>Tests: no output until the third value; correct removal on the fourth; interleaved entities; all zero; negative values; two independent service instances. For long floating-point streams, discuss rounding drift and periodic recalculation or compensated accumulation.</p><p>Do not treat duplicate ids or late timestamps as implementation details with an obvious answer. They change the contract. A strong candidate asks about retention, allowed lateness, replay and corrections before selecting a data structure. In round two, extend this to rolling volatility, event time versus clock time and irregular sampling.</p><h3>Alternative C Make a feature pipeline scale safely</h3><p>A feature job computes the mean of earlier values from the same entity in the interval [minute - 3, minute). It requires at least two earlier observations. Keys (entity, minute) are unique and input order is arbitrary. The current implementation scans the complete table for each row. Explain its cost, design a faster implementation, and show how you would prove the result is unchanged. Do not replace a time interval with a fixed number of rows.</p><table><thead><tr><th>Row</th><th>Entity</th><th>Minute</th><th>Value</th></tr></thead><tbody><tr><td>0</td><td>A</td><td>1</td><td>10</td></tr><tr><td>1</td><td>A</td><td>2</td><td>20</td></tr><tr><td>2</td><td>B</td><td>1</td><td>100</td></tr><tr><td>3</td><td>A</td><td>4</td><td>40</td></tr><tr><td>4</td><td>A</td><td>5</td><td>50</td></tr><tr><td>5</td><td>B</td><td>4</td><td>400</td></tr></tbody></table><pre><code>def slow_features(rows):
+    result = []
+    for row in rows:
+        history = [
+            r[&quot;value&quot;] for r in rows
+            if r[&quot;entity&quot;] == row[&quot;entity&quot;]
+            and row[&quot;minute&quot;] - 3 &lt;= r[&quot;minute&quot;] &lt; row[&quot;minute&quot;]
+        ]
+        result.append(
+            sum(history) / len(history)
+            if len(history) &gt;= 2 else None
+        )
+    return result</code></pre><h4>Staged prompts</h4><ul><li>Ask for the correct output by hand and the exact interval boundaries.</li><li>Reveal that the input has two million rows. Ask where the time and memory will go.</li><li>Ask for a faster outline or implementation, preserving original row order.</li><li>Introduce missing minutes, then require a comparison against the slow implementation on small random examples.</li></ul><h4>Model answer</h4><p>The expected result in original row order is [None, None, None, 15.0, 30.0, None]. The nested scan is O(n squared). Sort by entity and minute, maintain a deque of prior observations and a running sum, remove entries strictly older than minute minus 3, compute the feature, then insert the current observation. The order of those last two steps excludes the current row.</p><pre><code>from collections import deque
+
+def fast_features(rows):
+    ordered = sorted(
+        enumerate(rows),
+        key=lambda pair: (pair[1][&quot;entity&quot;], pair[1][&quot;minute&quot;])
+    )
+    result = [None] * len(rows)
+    active_entity = None
+    window = deque()
+    total = 0
+    for original_pos, row in ordered:
+        if row[&quot;entity&quot;] != active_entity:
+            active_entity = row[&quot;entity&quot;]
+            window.clear()
+            total = 0
+        cutoff = row[&quot;minute&quot;] - 3
+        while window and window[0][0] &lt; cutoff:
+            _, old = window.popleft()
+            total -= old
+        if len(window) &gt;= 2:
+            result[original_pos] = total / len(window)
+        window.append((row[&quot;minute&quot;], row[&quot;value&quot;]))
+        total += row[&quot;value&quot;]
+    return result</code></pre><p>Sorting costs O(n log n); the sweep costs O(n) because each observation enters and leaves the deque once. This in-memory reference also retains the sorted input and output, so total auxiliary memory is O(n), not constant. Its active window size depends on observation density, not simply the number 3.</p><p>Compare against the slow reference on small random, shuffled datasets; test the inclusive lower boundary, exclusive upper boundary, single-observation windows and independent entities. Profile representative data and check peak memory. Chunking needs ordered input and window state carried across chunks. A vectorised pandas time-based rolling solution is also acceptable if its closed interval and row alignment are correct.</p><p>In round two, discuss how these features enter a forecasting or trading decision, how their information timestamps are established, and how to avoid leakage in evaluation.</p></section><section class="case" id="score"><h2>Scoring and calibration</h2><p>Score the observable evidence, including the candidate&#x27;s response to a test or counterexample. Use the same question route within a cohort. The following is a proposed rubric to pilot with your own staff; it is not a validated hiring threshold.</p><table><thead><tr><th>Per debugging question</th><th>Points</th><th>Full credit evidence</th></tr></thead><tbody><tr><td>Diagnosis</td><td>3</td><td>Explains the causal mechanism and the observed output.</td></tr><tr><td>Repair</td><td>3</td><td>Meets the whole stated contract and avoids introducing a new error.</td></tr><tr><td>Tests</td><td>3</td><td>Chooses discriminating tests including a boundary, invariant or counterexample.</td></tr><tr><td>Explanation</td><td>1</td><td>Explains assumptions and the consequence of the change clearly.</td></tr></tbody></table><p>For each three-point dimension: 0 = absent or materially wrong; 1 = partial and requires substantial direction; 2 = mostly correct with a small prompt or omission; 3 = independent and complete. Use the separate hint record as context, without deducting points twice for the same assistance. A correct alternative solution earns the same credit as the model answer.</p><table><thead><tr><th>Case dimension</th><th>Points</th><th>What to assess</th></tr></thead><tbody><tr><td>Problem and contract</td><td>4</td><td>Defines the output, assumptions, boundaries and failure policy.</td></tr><tr><td>Data and state</td><td>4</td><td>Finds key, identity, timing or state issues in the chosen case.</td></tr><tr><td>Python design and implementation</td><td>5</td><td>Produces a coherent small implementation and sensible complexity analysis.</td></tr><tr><td>Validation</td><td>5</td><td>Tests meaningful cases, uses an oracle or invariants, and investigates failures.</td></tr><tr><td>Trade-offs and communication</td><td>2</td><td>Explains unresolved issues and a feasible next step.</td></tr></tbody></table><p>For the suggested route of four debugging questions, the maximum is 40 plus 20 for the case. Record the raw scores and the pattern of strengths; do not compare totals across different routes as though their difficulty were equal. Treat the optional extension as additional evidence, not an unannounced extra pass requirement.</p><h3>Suggested decision anchors</h3><ul><li>Strong evidence: repairs intermediate tasks mostly independently, writes meaningful tests, and recognises the main identity or time constraint in the case. Can explain both the implementation and its limits.</li><li>Mixed evidence: spots familiar mistakes but needs help to finish or test the repair, or gives a plausible design without translating it into code. Record exactly what remains uncertain.</li><li>Weak evidence for this round: cannot explain basic state or data handling after prompts, changes code without checking the specified behaviour, or repeatedly hides invalid inputs and missing information.</li><li>Do not interpret polished vocabulary, speed, or prior knowledge of one trick as sufficient evidence. A candidate can perform well while looking up syntax and working carefully.</li><li>Pilot the timings and rubric with several current colleagues. Review where competent people need clarification, remove accidental ambiguities, and agree evidence standards before interviewing candidates. Arrange reasonable accommodations and consistent reference access.</li></ul><h3>Reusable interviewer score sheet</h3><p>Candidate ____________________   Interviewer ____________________   Date ____________________</p><table><thead><tr><th>Question</th><th>Diagnosis /3</th><th>Repair /3</th><th>Tests /3</th><th>Explanation /1</th><th>Hints and evidence</th></tr></thead><tbody><tr><td>Q____</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Q____</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Q____</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Q____</td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table><table><thead><tr><th>Case</th><th>Contract /4</th><th>Data /4</th><th>Python /5</th><th>Validation /5</th><th>Trade-offs /2</th></tr></thead><tbody><tr><td>____________</td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table><p>Strongest evidence __________________________________________________________________</p><p>Unresolved evidence _________________________________________________________________</p><p>Suggested round two probe ____________________________________________________________</p></section><section id="sources"><h2>Sources and verification</h2><p>The three supplied files were treated as source material for framing an interview. The original document&#x27;s request to fit a model and submit forecasts was not carried out as a separate instruction.</p><ul><li>Data science challenge.docx — the original task wording and requested forecast outputs.</li><li>bullets_sales.csv — channel, identity, date coverage and repeated-row checks; pooled monthly transformation.</li><li>handgun_sales.csv — maker/model coverage and composite-key checks.</li></ul><p>Source folder: ../source_materials. Counts and schema findings were checked directly on 26 October 2026. No claim is made about how the supplied data was generated or what the missing identifiers were intended to encode.</p><p>All ten faulty snippets and reference repairs were executed in separate namespaces. Their displayed outputs were checked, then the repaired functions were exercised with targeted regressions. Runtime: Python 3.12.14, pandas 3.0.1, NumPy 2.3.5. Newline conventions are normalised for display. The question bank deliberately avoids relying on version-dependent chained-assignment behaviour.</p><p>The runnable companion <a href="interview_checks.py">interview_checks.py</a> contains every snippet and regression check. <a href="case_checks.py">case_checks.py</a> checks the case reference functions and source observations. Recheck the pack in the actual interview environment before use.</p><h3>Technical references</h3><p>Python object defaults and iterator behaviour are documented in the <a href="https://docs.python.org/3/faq/programming.html#why-are-default-values-shared-between-objects">Python FAQ</a> and <a href="https://docs.python.org/3/library/stdtypes.html#iterator-types">iterator documentation</a>. The relevant shape rules are in the <a href="https://numpy.org/doc/stable/user/basics.broadcasting.html">NumPy broadcasting guide</a>.</p><p>Join validation is described in <a href="https://pandas.pydata.org/docs/reference/api/pandas.merge.html">pandas merge</a>; time-distance joins in <a href="https://pandas.pydata.org/docs/reference/api/pandas.merge_asof.html">pandas merge_asof</a>. The independent population-variance reference is <a href="https://docs.python.org/3/library/statistics.html#statistics.pvariance">statistics.pvariance</a>. These references support API semantics; the interview questions, timing and scoring are proposed materials for this role.</p></section><footer>Senior Quantitative Analysis recruitment · Round 1 · Prepared 26 October 2026</footer></main></body></html>

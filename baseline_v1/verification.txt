@@ -1,0 +1,11 @@
+Python 3.12.14; pandas 3.0.1; NumPy 2.3.5
+Q01: faulty output, repaired output and regression checks PASS
+Q02: faulty output, repaired output and regression checks PASS
+Q03: faulty output, repaired output and regression checks PASS
+Q04: faulty output, repaired output and regression checks PASS
+Q05: faulty output, repaired output and regression checks PASS
+Q06: faulty output, repaired output and regression checks PASS
+Q07: faulty output, repaired output and regression checks PASS
+Q08: faulty output, repaired output and regression checks PASS
+Q09: faulty output, repaired output and regression checks PASS
+Q10: faulty output, repaired output and regression checks PASS

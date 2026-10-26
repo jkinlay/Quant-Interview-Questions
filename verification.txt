@@ -1,0 +1,11 @@
+Python 3.12.14; pandas 3.0.1; NumPy 2.3.5
+Q01: faulty run, model run and regressions PASS
+Q02: faulty run, model run and regressions PASS
+Q03: faulty run, model run and regressions PASS
+Q04: faulty run, model run and regressions PASS
+Q05: faulty run, model run and regressions PASS
+Q06: faulty run, model run and regressions PASS
+Q07: faulty run, model run and regressions PASS
+Q08: faulty run, model run and regressions PASS
+Q09: faulty run, model run and regressions PASS
+Q10: faulty run, model run and regressions PASS

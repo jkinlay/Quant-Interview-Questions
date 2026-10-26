@@ -1,0 +1,120 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Python debugging exercises</title><style>
+:root{color-scheme:light;--ink:#182332;--muted:#526171;--line:#ccd5df;}
+*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#f3f5f7;margin:0;line-height:1.6}
+main{max-width:1000px;margin:32px auto;padding:52px 64px;background:white;border:1px solid #e0e5eb}
+h1,h2,h3,h4{color:#000;line-height:1.2;break-after:avoid}h1{font-size:34px;margin:0 0 18px}h2{font-size:25px;margin:46px 0 17px}h3{font-size:19px;margin:26px 0 12px}h4{font-size:15px;margin:20px 0 8px}
+p{margin:10px 0 15px}li{margin:6px 0}ul,ol{padding-left:24px}a{color:#24548c;text-underline-offset:3px}nav{margin:24px 0 32px}nav a{display:inline-block;margin:3px 16px 3px 0}
+.meta{color:var(--muted);font-size:14px}.label{font-weight:700;margin-bottom:6px}
+pre{font-family:Consolas,"Courier New",monospace;font-size:13px;line-height:1.48;white-space:pre-wrap;overflow-wrap:anywhere;background:#f5f7f9;border:1px solid #dce2e9;padding:16px;margin:10px 0 18px;tab-size:4}
+code{font-family:inherit}table{width:100%;border-collapse:collapse;margin:18px 0 26px;font-size:14px;break-inside:auto}
+th,td{border:1px solid var(--line);padding:10px 12px;vertical-align:middle;text-align:left}th{background:#223951;color:#fff;font-weight:600}tbody tr:nth-child(even){background:#f5f8fb}tr{break-inside:avoid}thead{display:table-header-group}
+.question{margin-top:48px;padding-top:1px}.answer{margin-top:25px}.small{font-size:13px}.rule{margin-top:22px;font-weight:700}
+footer{margin-top:44px;color:var(--muted);font-size:12px}.toolbar{max-width:1000px;margin:20px auto 0;font-size:14px}
+@media(max-width:720px){main{margin:0;padding:24px 20px;border:0}h1{font-size:29px}pre{font-size:12px;padding:12px}table{font-size:12px}th,td{padding:7px}.toolbar{padding:0 20px}}
+@media print{@page{size:A4;margin:17mm}body{background:white;font-size:10.5pt;line-height:1.4}main{max-width:none;margin:0;padding:0;border:0}h1{font-size:25pt}h2{font-size:18pt;margin-top:24pt}h3{font-size:14pt}h4{font-size:11pt}pre{font-size:9pt;line-height:1.3;padding:9pt;break-inside:avoid}table{font-size:9pt}th,td{padding:6pt}a{color:inherit;text-decoration:none}.toolbar,nav{display:none}.question,.case{break-before:page}.meta{font-size:9pt}footer{font-size:8pt}.notes{height:32mm;border-bottom:1px solid #ccc}.print-break{break-before:page}}
+</style></head><body><div class="toolbar">Printable interview materials · 26 October 2026 · Candidate copy without answers</div><main><h1>Python debugging exercises</h1><p>You will work through selected Python questions with the interviewer, followed by one case discussion. The supplied output is from the faulty code. Explain why it occurs, propose a correction, and show how you would test it. State assumptions when needed.</p><p>You are not expected to complete this entire bank. Each selected question is self-contained. You may use the reference material supplied by the interviewer. Ask for clarification and take a short period to read before talking through your answer.</p><p>The inputs meet the stated contracts unless the interviewer explicitly changes them. The examples use Python 3.12, pandas 3.0 and NumPy 2.3. Equivalent correct approaches are welcome.</p><nav><a href="#q1">Question 1</a><a href="#q2">Question 2</a><a href="#q3">Question 3</a><a href="#q4">Question 4</a><a href="#q5">Question 5</a><a href="#q6">Question 6</a><a href="#q7">Question 7</a><a href="#q8">Question 8</a><a href="#q9">Question 9</a><a href="#q10">Question 10</a></nav><section class="question" id="q1"><h2>Question 1</h2><p>Return the change between each adjacent pair in a finite list of numbers, in order. An empty or one-element list returns an empty list. Do not change the input.</p><pre><code>def changes(values):
+    return [values[i] - values[i - 1]
+            for i in range(len(values))]
+
+print(changes([100, 105, 102]))</code></pre><p class="label">Actual output</p><pre><code>[-2, 5, -3]</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q2"><h2>Question 2</h2><p>Calculate the arithmetic mean, excluding only None. Zero is a valid observation. Return None if there are no valid observations. Inputs contain finite numbers or None; NaN is outside this question&#x27;s contract.</p><pre><code>def mean_valid(values):
+    clean = [x for x in values if x]
+    return sum(clean) / len(clean) if clean else None
+
+print(mean_valid([0.0, 2.0, None, 4.0]))</code></pre><p class="label">Actual output</p><pre><code>3.0</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q3"><h2>Question 3</h2><p>When bucket is omitted, start a new list for that call. If the caller supplies a list, append to that same list and return it.</p><pre><code>def record(value, bucket=[]):
+    bucket.append(value)
+    return bucket
+
+a = record(10)
+b = record(20)
+print(a, b, a is b)</code></pre><p class="label">Actual output</p><pre><code>[10, 20] [10, 20] True</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q4"><h2>Question 4</h2><p>Return (total, count) for a finite iterable of integers. It may be a single-use generator too large to materialise. Use one pass and constant auxiliary memory. Empty input returns (0, 0).</p><pre><code>def summarise(values):
+    total = sum(values)
+    count = sum(1 for _ in values)
+    return total, count
+
+print(summarise(x for x in [2, 4, 6]))</code></pre><p class="label">Actual output</p><pre><code>(12, 0)</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q5"><h2>Question 5</h2><p>Attach each score to the row with the matching id, preserving row order. Score labels are unique and every row id is present in scores; repeated ids in the rows are permitted.</p><pre><code>import pandas as pd
+
+def attach_scores(rows, scores):
+    return rows.assign(score=scores.to_numpy())
+
+rows = pd.DataFrame({&quot;id&quot;: [&quot;B&quot;, &quot;A&quot;]})
+scores = pd.Series([0.1, 0.9], index=[&quot;A&quot;, &quot;B&quot;])
+print(attach_scores(rows, scores).to_dict(&quot;records&quot;))</code></pre><p class="label">Actual output</p><pre><code>[{&#x27;id&#x27;: &#x27;B&#x27;, &#x27;score&#x27;: 0.1}, {&#x27;id&#x27;: &#x27;A&#x27;, &#x27;score&#x27;: 0.9}]</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q6"><h2>Question 6</h2><p>Attach one category to each sale without changing the number of sales or their total quantity. The lookup may contain exact repeated rows, which may be collapsed. Conflicting categories for a sku and unmatched sale skus must raise an error. Sale rows are legitimate separate records. All keys and categories are nonmissing strings.</p><pre><code>import pandas as pd
+
+def enrich(sales, lookup):
+    return sales.merge(lookup, on=&quot;sku&quot;)
+
+sales = pd.DataFrame({
+    &quot;sale_id&quot;: [1, 2], &quot;sku&quot;: [&quot;A&quot;, &quot;B&quot;], &quot;qty&quot;: [10, 20]
+})
+lookup = pd.DataFrame({
+    &quot;sku&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;], &quot;category&quot;: [&quot;X&quot;, &quot;X&quot;, &quot;Y&quot;]
+})
+out = enrich(sales, lookup)
+print(len(out), int(out[&quot;qty&quot;].sum()))</code></pre><p class="label">Actual output</p><pre><code>3 40</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q7"><h2>Question 7</h2><p>For a 2D array x with one observation per row and one variable per column, compute the weighted sum of variables for each row. w is a column vector of shape (number of variables, 1). Reject incompatible shapes. Inputs are finite real numbers.</p><pre><code>import numpy as np
+
+def weighted_rows(x, w):
+    return (x * w).sum(axis=1)
+
+x = np.array([[1., 2.], [3., 4.]])
+w = np.array([[0.25], [0.75]])
+print(weighted_rows(x, w).tolist())</code></pre><p class="label">Actual output</p><pre><code>[0.75, 5.25]</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q8"><h2>Question 8</h2><p>For each entity and day, return the mean of that entity&#x27;s previous two observations, excluding the current observation. Return missing until two previous observations exist. Sort the output by entity and day. Keys are unique; each entity is observed daily without gaps in this fixture.</p><pre><code>import pandas as pd
+
+def prior_means(df):
+    out = df.sort_values([&quot;entity&quot;, &quot;day&quot;]).copy()
+    out[&quot;prior_mean&quot;] = (
+        out.groupby(&quot;entity&quot;)[&quot;qty&quot;]
+        .transform(lambda s: s.rolling(2, min_periods=2).mean())
+        .shift(1)
+    )
+    return out
+
+df = pd.DataFrame({
+    &quot;entity&quot;: [&quot;B&quot;, &quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;B&quot;],
+    &quot;day&quot;: [2, 3, 1, 1, 2, 3],
+    &quot;qty&quot;: [200, 30, 10, 100, 20, 300]
+})
+out = prior_means(df)
+print(out[[&quot;entity&quot;, &quot;day&quot;, &quot;prior_mean&quot;]]
+      .to_csv(index=False, na_rep=&quot;NA&quot;), end=&quot;&quot;)</code></pre><p class="label">Actual output</p><pre><code>entity,day,prior_mean
+A,1,NA
+A,2,NA
+A,3,15.0
+B,1,25.0
+B,2,NA
+B,3,150.0</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q9"><h2>Question 9</h2><p>Compute population variance (divide by n) for a finite, possibly single-use iterable of finite floats. Use one pass and constant auxiliary memory. Empty input raises ValueError; a singleton has variance zero. The fixture has a large level and small spread.</p><pre><code>def population_variance(values):
+    n = 0
+    total = total_sq = 0.0
+    for x in values:
+        n += 1
+        total += x
+        total_sq += x * x
+    if n == 0:
+        raise ValueError(&quot;Empty input&quot;)
+    return total_sq / n - (total / n) ** 2
+
+values = [1e9 + 1, 1e9 + 2, 1e9 + 3]
+print(f&quot;{population_variance(iter(values)):.6f}&quot;)</code></pre><p class="label">Actual output</p><pre><code>0.000000</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><p class="label">Notes</p><div class="notes"></div></section><section class="question" id="q10"><h2>Question 10</h2><p>Attach a price to each decision, preserving decision order. Times are integer minutes from a common origin. For the same symbol, eligible quotes have event_min &lt;= decision_min, available_min &lt;= decision_min, and event age at most 5 minutes inclusive. Choose the greatest event_min, then the greatest available_min for revisions of that event. A late older event must not replace a newer event. Return missing if none qualifies. Decision ids are unique. Quote (symbol, event_min, available_min) keys are unique. Inputs contain no missing fields and available_min &gt;= event_min. A clear reference implementation is sufficient; discuss scaling separately.</p><pre><code>import pandas as pd
+
+def attach_prices(decisions, quotes):
+    out = pd.merge_asof(
+        decisions.sort_values(&quot;decision_min&quot;),
+        quotes.sort_values(&quot;event_min&quot;, kind=&quot;stable&quot;),
+        by=&quot;symbol&quot;,
+        left_on=&quot;decision_min&quot;, right_on=&quot;event_min&quot;,
+        direction=&quot;backward&quot;, tolerance=5
+    )
+    return out.set_index(&quot;id&quot;).reindex(decisions[&quot;id&quot;])
+
+decisions = pd.DataFrame({
+    &quot;id&quot;: [0, 1, 2, 3, 4, 5],
+    &quot;symbol&quot;: [&quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;A&quot;, &quot;C&quot;, &quot;A&quot;],
+    &quot;decision_min&quot;: [3, 3, 1, 7, 3, 8]
+})
+quotes = pd.DataFrame({
+    &quot;symbol&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;A&quot;],
+    &quot;event_min&quot;: [0, 1, 1, 2, 2, 2, -1],
+    &quot;available_min&quot;: [0, 1, 2, 4, 5, 6, 7],
+    &quot;price&quot;: [100., 101., 200., 102., 202., 103., 99.]
+})
+out = attach_prices(decisions, quotes)
+print([None if pd.isna(v) else float(v) for v in out[&quot;price&quot;]])</code></pre><p class="label">Actual output</p><pre><code>[103.0, 202.0, 101.0, 103.0, None, None]</code></pre><p>Explain the result, repair the code, and propose tests that would detect the defect.</p><p class="label">Notes</p><div class="notes"></div></section><footer>Senior Quantitative Analysis recruitment · Round 1 · Prepared 26 October 2026</footer></main></body></html>
